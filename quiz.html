@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Quiz with API</title>
+  <link rel="stylesheet" href="stylec.css">
+  <style>
+    /* Quiz and API-specific styles */
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    #joke {
+      margin-top: 15px;
+      font-style: italic;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.4em;
+      }
+      button {
+        width: 100%;
+      }
+    }
+
+    /* Perfect score message */
+    .congrats {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Interactive Quiz</h2>
+    <div id="quiz"></div>
+    <button id="submit">Submit</button>
+    <div id="result"></div>
+
+    <hr>
+
+    <h2>Need a Break? Get a Random Joke!</h2>
+    <button id="getJoke">Get Joke</button>
+    <p id="joke"></p>
+  </div>
+
+  <script>
+    // Quiz Feature
+    const quizData = [
+      { question: "2 + 2 = x", answer: "4" },
+      { question: "Capital of France?", answer: "Paris" }
+    ];
+
+    const quizContainer = document.getElementById('quiz');
+    quizData.forEach((q, i) => {
+      quizContainer.innerHTML += `
+        <p>${q.question}</p>
+        <input type="text" id="q${i}" placeholder="Type your answer">
+      `;
+    });
+
+    document.getElementById('submit').onclick = () => {
+      let score = 0;
+      quizData.forEach((q, i) => {
+        if (document.getElementById(`q${i}`).value.trim().toLowerCase() === q.answer.toLowerCase()) {
+          score++;
+        }
+      });
+
+      let message = `Score: ${score}/${quizData.length}`;
+      if (score === quizData.length) {
+        message += `<div class="congrats">🎉 Perfect! You got all the answers right!</div>`;
+      }
+      document.getElementById('result').innerHTML = message;
+    };
+
+    // API Fetch Feature
+    document.getElementById('getJoke').onclick = async () => {
+      try {
+        const res = await fetch('https://official-joke-api.appspot.com/random_joke');
+        const data = await res.json();
+        document.getElementById('joke').textContent = `${data.setup} - ${data.punchline}`;
+      } catch (error) {
+        document.getElementById('joke').textContent = "Couldn't fetch a joke right now.";
+      }
+    };
+  </script>
+</body>
+</html>
+
