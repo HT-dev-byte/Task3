@@ -60,7 +60,7 @@
 
     <hr>
 
-    <h2>Need a Break? Get a Random Joke!</h2>
+    <h2>Need a Break! Get a Random Joke!</h2>
     <button id="getJoke">Get Joke</button>
     <p id="joke"></p>
   </div>
@@ -102,10 +102,11 @@
         const data = await res.json();
         document.getElementById('joke').textContent = `${data.setup} - ${data.punchline}`;
       } catch (error) {
-        document.getElementById('joke').textContent = "Couldn't fetch a joke right now.";
+        document.getElementById('joke').textContent = "Couldn't get a joke right now.";
       }
     };
   </script>
 </body>
 </html>
+
 
